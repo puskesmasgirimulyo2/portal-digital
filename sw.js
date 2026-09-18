@@ -1,4 +1,4 @@
-const CACHE = "portal-girimulyo2-v1";
+const CACHE = "portal-girimulyo2-shell-v1";
 const assets = [
   "./",
   "./index.html",
@@ -25,8 +25,10 @@ self.addEventListener("activate", event => {
 /**
  * Navigasi (buka/refresh index.html) pakai network-first, supaya versi
  * terbaru dari server selalu diutamakan; cache cuma cadangan saat offline.
- * Aset lain (gambar, ikon, manifest) tetap cache-first untuk kecepatan
- * & dukungan offline.
+ * Aset lain (favicon, logo, ikon, carousel, manifest) tetap cache-first
+ * untuk kecepatan & dukungan offline -- TAPI kalau gagal (404/error),
+ * jangan simpan hasil gagal itu ke cache, supaya begitu file yang benar
+ * di-upload, permintaan berikutnya otomatis ambil versi yang benar.
  */
 self.addEventListener("fetch", event => {
   const req = event.request;
@@ -45,6 +47,15 @@ self.addEventListener("fetch", event => {
   }
 
   event.respondWith(
-    caches.match(req).then(res => res || fetch(req))
+    caches.match(req).then(cached => {
+      if (cached) return cached;
+      return fetch(req).then(res => {
+        if (res && res.ok) {
+          const resClone = res.clone();
+          caches.open(CACHE).then(cache => cache.put(req, resClone));
+        }
+        return res;
+      });
+    })
   );
 });
