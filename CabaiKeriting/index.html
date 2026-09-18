@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Cabai Keriting | Pemeriksaan Gizi Balita</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+html,body{
+width:100%;
+height:100%;
+overflow:hidden;
+font-family:'Segoe UI',system-ui,sans-serif;
+background:#020617;
+}
+
+/* =========================
+   WEB APP
+========================= */
+
+iframe{
+position:fixed;
+inset:0;
+width:100%;
+height:100%;
+border:0;
+background:#fff;
+}
+
+
+/* =========================
+   LOADER
+========================= */
+
+#loader{
+position:fixed;
+inset:0;
+z-index:9999;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+background:
+radial-gradient(
+circle at center,
+#065f46 0%,
+#022c22 40%,
+#020617 80%
+);
+
+transition:
+opacity .6s ease,
+visibility .6s ease;
+}
+
+.hide{
+opacity:0;
+visibility:hidden;
+}
+
+
+/* =========================
+   CARD
+========================= */
+
+.card{
+position:relative;
+z-index:2;
+
+width:92%;
+max-width:390px;
+
+padding:30px 25px;
+
+border-radius:28px;
+
+background:
+rgba(2,44,34,.92);
+
+backdrop-filter:blur(25px);
+-webkit-backdrop-filter:blur(25px);
+
+border:1px solid rgba(167,243,208,.3);
+
+color:#ffffff;
+
+text-align:center;
+
+box-shadow:
+0 25px 70px rgba(0,0,0,.75);
+
+text-shadow:
+0 2px 5px rgba(0,0,0,.7);
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.header{
+display:flex;
+align-items:center;
+justify-content:space-between;
+
+margin-bottom:10px;
+}
+
+.label{
+font-size:11px;
+font-weight:800;
+letter-spacing:2px;
+color:#d1fae5;
+}
+
+.status{
+width:10px;
+height:10px;
+
+border-radius:50%;
+
+background:#34d399;
+
+box-shadow:
+0 0 15px #34d399;
+
+animation:pulse 1.8s infinite;
+}
+
+@keyframes pulse{
+
+0%,100%{
+transform:scale(1);
+opacity:1;
+}
+
+50%{
+transform:scale(1.5);
+opacity:.5;
+}
+
+}
+
+
+/* =========================
+   TITLE
+========================= */
+
+.title{
+font-size:20px;
+font-weight:800;
+color:#ffffff;
+
+margin-top:5px;
+
+text-shadow:
+0 2px 8px rgba(0,0,0,.9);
+}
+
+.subtitle{
+font-size:13px;
+font-weight:500;
+
+color:#d1fae5;
+
+margin-top:7px;
+
+line-height:1.6;
+}
+
+
+/* =========================
+   ANIMASI PERTUMBUHAN
+========================= */
+
+.growth{
+position:relative;
+height:155px;
+margin:20px 0 15px;
+}
+
+
+/* glow */
+
+.glow{
+position:absolute;
+
+width:130px;
+height:130px;
+
+left:50%;
+top:50%;
+
+transform:translate(-50%,-50%);
+
+border-radius:50%;
+
+background:
+rgba(16,185,129,.10);
+
+box-shadow:
+0 0 70px rgba(16,185,129,.3);
+
+animation:glow 3s infinite;
+}
+
+@keyframes glow{
+
+0%,100%{
+transform:
+translate(-50%,-50%)
+scale(.9);
+}
+
+50%{
+transform:
+translate(-50%,-50%)
+scale(1.08);
+}
+
+}
+
+
+/* =========================
+   BALITA
+========================= */
+
+.child{
+position:absolute;
+
+left:50%;
+top:43%;
+
+transform:translate(-50%,-50%);
+
+width:52px;
+height:52px;
+
+border-radius:50%;
+
+background:
+linear-gradient(
+145deg,
+#a7f3d0,
+#10b981
+);
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-size:27px;
+
+box-shadow:
+0 0 28px rgba(52,211,153,.7);
+
+animation:
+floatChild 2.5s infinite ease-in-out;
+}
+
+@keyframes floatChild{
+
+0%,100%{
+transform:
+translate(-50%,-50%)
+translateY(0);
+}
+
+50%{
+transform:
+translate(-50%,-50%)
+translateY(-8px);
+}
+
+}
+
+
+/* =========================
+   PENGUKURAN TINGGI
+========================= */
+
+.measure{
+position:absolute;
+
+right:50px;
+top:12px;
+
+width:4px;
+height:125px;
+
+border-radius:10px;
+
+background:
+linear-gradient(
+to bottom,
+#d1fae5,
+#10b981
+);
+
+box-shadow:
+0 0 12px rgba(52,211,153,.5);
+}
+
+.measure span{
+position:absolute;
+
+left:-8px;
+
+width:20px;
+height:2px;
+
+background:#ecfdf5;
+
+opacity:.9;
+}
+
+.measure span:nth-child(1){
+top:10px;
+}
+
+.measure span:nth-child(2){
+top:35px;
+}
+
+.measure span:nth-child(3){
+top:60px;
+}
+
+.measure span:nth-child(4){
+top:85px;
+}
+
+.measure span:nth-child(5){
+top:110px;
+}
+
+
+/* =========================
+   TIMBANGAN
+========================= */
+
+.scale{
+position:absolute;
+
+left:50%;
+bottom:2px;
+
+transform:translateX(-50%);
+
+width:110px;
+height:12px;
+
+border-radius:20px;
+
+background:#064e3b;
+
+border:
+1px solid rgba(167,243,208,.4);
+
+box-shadow:
+0 5px 15px rgba(0,0,0,.5);
+}
+
+.scale::before{
+content:"";
+
+position:absolute;
+
+left:50%;
+top:-20px;
+
+transform:translateX(-50%);
+
+width:46px;
+height:20px;
+
+border-radius:50% 50% 5px 5px;
+
+background:#10b981;
+
+box-shadow:
+0 0 14px rgba(16,185,129,.6);
+}
+
+
+/* =========================
+   GRAFIK PERTUMBUHAN
+========================= */
+
+.chart{
+position:absolute;
+
+left:18px;
+bottom:15px;
+
+width:65px;
+height:70px;
+
+display:flex;
+align-items:flex-end;
+
+gap:5px;
+}
+
+.chart i{
+display:block;
+
+width:10px;
+
+border-radius:4px 4px 0 0;
+
+background:
+linear-gradient(
+to top,
+#10b981,
+#a7f3d0
+);
+
+animation:
+chartGrow 2s infinite ease-in-out;
+}
+
+.chart i:nth-child(1){
+height:25px;
+animation-delay:.1s;
+}
+
+.chart i:nth-child(2){
+height:38px;
+animation-delay:.3s;
+}
+
+.chart i:nth-child(3){
+height:50px;
+animation-delay:.5s;
+}
+
+.chart i:nth-child(4){
+height:63px;
+animation-delay:.7s;
+}
+
+@keyframes chartGrow{
+
+0%,100%{
+transform:scaleY(.7);
+}
+
+50%{
+transform:scaleY(1);
+}
+
+}
+
+
+/* =========================
+   TEKS
+========================= */
+
+.loading-text{
+font-size:14px;
+font-weight:700;
+
+color:#ffffff;
+
+margin-top:10px;
+
+text-shadow:
+0 2px 5px rgba(0,0,0,.9);
+}
+
+.description{
+font-size:12px;
+
+line-height:1.6;
+
+color:#d1fae5;
+
+margin-top:6px;
+}
+
+
+/* =========================
+   PROGRESS
+========================= */
+
+.progress{
+margin-top:20px;
+
+height:6px;
+
+border-radius:20px;
+
+background:#011c16;
+
+overflow:hidden;
+
+border:
+1px solid rgba(167,243,208,.15);
+}
+
+.bar{
+height:100%;
+
+width:38%;
+
+border-radius:20px;
+
+background:
+linear-gradient(
+90deg,
+#10b981,
+#d1fae5,
+#10b981
+);
+
+animation:
+loading 1.5s infinite;
+}
+
+@keyframes loading{
+
+0%{
+transform:translateX(-130%);
+}
+
+100%{
+transform:translateX(330%);
+}
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:480px){
+
+.card{
+padding:27px 20px;
+}
+
+.title{
+font-size:18px;
+}
+
+.growth{
+height:145px;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<!-- =========================
+     WEB APP CABAI KERITING
+========================= -->
+
+<iframe
+id="app"
+src="https://script.google.com/macros/s/AKfycbwFb7BsfOiFQ1tXKI58SzwUX5cClT8BL30MFbq7Xikbi_g7nM_WVQJAjUlRLQ6ZySCS6A/exec"
+allow="geolocation">
+</iframe>
+
+
+<!-- =========================
+     LOADING SCREEN
+========================= -->
+
+<div id="loader">
+
+<div class="card">
+
+
+<div class="header">
+
+<div class="label">
+GIZI BALITA
+</div>
+
+<div class="status"></div>
+
+</div>
+
+
+<div class="title">
+PEMERIKSAAN GIZI BALITA
+</div>
+
+
+<div class="subtitle">
+CABAI KERITING<br>
+Puskesmas Panjatan I
+</div>
+
+
+<!-- ANIMASI -->
+
+<div class="growth">
+
+<div class="glow"></div>
+
+
+<!-- GRAFIK -->
+
+<div class="chart">
+
+<i></i>
+<i></i>
+<i></i>
+<i></i>
+
+</div>
+
+
+<!-- PENGUKURAN -->
+
+<div class="measure">
+
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+
+</div>
+
+
+<!-- BALITA -->
+
+<div class="child">
+👶
+</div>
+
+
+<!-- TIMBANGAN -->
+
+<div class="scale"></div>
+
+</div>
+
+
+<div class="loading-text">
+Menyiapkan pemeriksaan...
+</div>
+
+
+<div class="description">
+Pengukuran dan pemantauan pertumbuhan<br>
+serta status gizi balita
+</div>
+
+
+<!-- PROGRESS -->
+
+<div class="progress">
+
+<div class="bar"></div>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+<script>
+
+const loader =
+document.getElementById("loader");
+
+const app =
+document.getElementById("app");
+
+
+/* WEB APP SELESAI DIMUAT */
+
+app.onload=function(){
+
+setTimeout(()=>{
+
+loader.classList.add("hide");
+
+},500);
+
+};
+
+
+/* FALLBACK */
+
+setTimeout(()=>{
+
+loader.classList.add("hide");
+
+},8000);
+
+</script>
+
+
+</body>
+</html>
